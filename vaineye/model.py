@@ -45,6 +45,7 @@ class RequestTracker(object):
             Column('response_code', Integer, index=True),
             Column('response_bytes', Integer),
             Column('content_type', String(200), index=True),
+            Column('userid', String(50), index=True),
             Column('ip_country_code', String(100), index=True),
             Column('ip_country_code3', String(100)), # ?
             Column('ip_country_name', String(100)), # Redundant?
@@ -83,6 +84,8 @@ class RequestTracker(object):
             'QUERY_STRING': environ.get('QUERY_STRING', ''),
             'HTTP_USER_AGENT': environ.get('HTTP_USER_AGENT', ''),
             'HTTP_REFERER': environ.get('HTTP_REFERER', ''),
+            'repoze.who.userid':  environ.get('repoze.who.identity', {}).get(
+                                                'repoze.who.userid', ''),
             }
         request['vaineye.response_code'] = int(status.split(None, 1)[0])
         for header_name, header_value in response_headers:
@@ -128,6 +131,7 @@ class RequestTracker(object):
                 'response_code': request['vaineye.response_code'],
                 'response_bytes': request.get('vaineye.response_bytes'),
                 'content_type': request.get('vaineye.content_type'),
+                'userid': request.get('repoze.who.userid'),
                 }
             if request.get('vaineye.ip_location'):
                 for name, value in request['vaineye.ip_location'].items():
