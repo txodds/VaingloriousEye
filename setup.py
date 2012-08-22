@@ -22,6 +22,7 @@ setup(name='VaingloriousEye',
       url='http://pythonpaste.org/vaingloriouseye/',
       license='MIT',
       packages=find_packages(exclude=['ez_setup', 'examples', 'tests']),
+      package_data={'': ['GeoLiteCity.dat']},
       include_package_data=True,
       zip_safe=False,
       install_requires=[
