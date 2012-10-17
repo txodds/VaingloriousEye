@@ -87,6 +87,8 @@ class RequestTracker(object):
             'repoze.who.userid':  environ.get('repoze.who.identity', {}).get(
                                                 'repoze.who.userid', ''),
             }
+        if request['PATH_INFO'].startswith('/static'):
+            return
         request['vaineye.response_code'] = int(status.split(None, 1)[0])
         for header_name, header_value in response_headers:
             header_name = header_name.lower()
