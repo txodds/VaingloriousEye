@@ -135,8 +135,7 @@ class RequestTracker(object):
                 'content_type': request.get('vaineye.content_type'),
                 }
             user_id = request.get('repoze.who.userid')
-            if user_id:
-                values['userid'] = user_id
+            values['userid'] = user_id or None
             if request.get('vaineye.ip_location'):
                 for name, value in request['vaineye.ip_location'].items():
                     if isinstance(value, str):
