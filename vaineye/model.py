@@ -152,15 +152,8 @@ class RequestTracker(object):
             ins = self.table_insert.values(values)
         if callback:
             callback()
-        try:
+        if all_values:    
             conn.execute(self.table_insert, all_values)
-        except Exception, e:
-            # This query can result in brutally large error messages
-            msg = str(e)
-            if len(msg) > 80:
-                msg = str(e.__class__)
-                raise Exception('Error in insert: %s' % msg)
-            raise
         self._pending = []
 
     def encode_request(self, request):
