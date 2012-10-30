@@ -75,7 +75,7 @@ class RequestTracker(object):
         request = {
             'REMOTE_ADDR': environ['REMOTE_ADDR'],
             'vaineye.date': datetime.now(),
-            'vaineye.start_time': time.time(),
+            'vaineye.start_time': start_time,
             'REQUEST_METHOD': environ['REQUEST_METHOD'],
             'wsgi.url_scheme': environ['wsgi.url_scheme'],
             'HTTP_HOST': environ.get('HTTP_HOST', ''),
