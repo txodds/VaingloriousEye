@@ -287,9 +287,5 @@ class RequestTracker(object):
             return
         if not rec:
             return
-        if rec.get('postal_code'):
-            state = zip_to_state(rec['postal_code'])
-        else:
-            state = None 
-        rec['state'] = state
+        rec['state'] = 'xxx'
         request['vaineye.ip_location'] = rec
