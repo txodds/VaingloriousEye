@@ -87,10 +87,10 @@ class RequestTracker(object):
             'repoze.who.userid':  environ.get('repoze.who.identity', {}).get(
                                                 'repoze.who.userid', ''),
             }
-        # don't record static resource requests
-        print request['SCRIPT_NAME'], request['PATH_INFO']
+        # don't record static resource or ping requests
         if request['SCRIPT_NAME'].startswith('/fanstatic') or \
-           request['PATH_INFO'].startswith('/static'):
+           request['PATH_INFO'].startswith('/static') or \
+           request['HTTP_USER_AGENT'].startswith('check_http'):
             return
         request['vaineye.response_code'] = int(status.split(None, 1)[0])
         for header_name, header_value in response_headers:
