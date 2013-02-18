@@ -154,8 +154,14 @@ class RequestTracker(object):
             ins = self.table_insert.values(values)
         if callback:
             callback()
-        if all_values:    
-            conn.execute(self.table_insert, all_values)
+        if all_values:
+            trans = conn.begin()
+            try:    
+                conn.execute(self.table_insert, all_values)
+                trans.commit()
+            except Exception, e:
+                print 'error: ', e
+                trans.rollback()    
         self._pending = []
 
     def encode_request(self, request):
