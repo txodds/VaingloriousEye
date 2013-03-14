@@ -69,7 +69,7 @@ class StatusWatcher(object):
         start_time = time.time()
         def repl_start_response(status, headers, exc_info=None):
             end_time = time.time()
-            environ['REMOTE_ADDR'] = environ.get('X-Real-IP')
+            environ['REMOTE_ADDR'] = environ.get('HTTP_X_REAL_IP')
             self.request_tracker.add_request(
                 environ=environ,
                 start_time=start_time,
