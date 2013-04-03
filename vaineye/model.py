@@ -74,7 +74,7 @@ class RequestTracker(object):
         """
         request = {
             'REMOTE_ADDR': environ['REMOTE_ADDR'],
-            'vaineye.date': datetime.now(),
+            'vaineye.date': datetime.utcnow(),
             'vaineye.start_time': start_time,
             'REQUEST_METHOD': environ['REQUEST_METHOD'],
             'wsgi.url_scheme': environ['wsgi.url_scheme'],
@@ -118,7 +118,7 @@ class RequestTracker(object):
                 processing_time = None
             date = request.get('vaineye.date')
             if not date:
-                date = datetime.fromtimestamp(request['vaineye.start_time'])
+                date = datetime.utcfromtimestamp(request['vaineye.start_time'])
             self.add_geoip(request)
             self.encode_request(request)
             values = {
