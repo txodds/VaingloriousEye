@@ -296,5 +296,5 @@ class RequestTracker(object):
             return
         if not rec:
             return
-        rec['state'] = 'xxx'
+        rec['state'] = 'xx'
         request['vaineye.ip_location'] = rec
