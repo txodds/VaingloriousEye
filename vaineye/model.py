@@ -148,6 +148,8 @@ class RequestTracker(object):
                         except UnicodeDecodeError, e:
                             raise ValueError("Bad item: %r, %s" % (value, e))
                     values['ip_%s' % name] = value
+                if 'ip_region' not in values:
+                    values['ip_region'] = 'xxx'
             else:
                 values.update(self._empty_ip_location)
             all_values.append(values)
