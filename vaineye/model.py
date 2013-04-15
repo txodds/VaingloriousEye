@@ -90,6 +90,7 @@ class RequestTracker(object):
         # don't record static resource or ping requests
         if request['SCRIPT_NAME'].startswith('/fanstatic') or \
            request['PATH_INFO'].startswith('/static') or \
+           request['PATH_INFO'].startswith('/deform') or \
            request['HTTP_USER_AGENT'].startswith('check_http'):
             return
         request['vaineye.response_code'] = int(status.split(None, 1)[0])
@@ -143,15 +144,16 @@ class RequestTracker(object):
                 for name, value in request['vaineye.ip_location'].items():
                     if isinstance(value, str):
                         try:
-                            ## FIXME: right encoding?
-                            value = value.decode('latin1')
+                            value = value.decode('utf8')
                         except UnicodeDecodeError, e:
-                            raise ValueError("Bad item: %r, %s" % (value, e))
+                            value = value.decode('latin1')
                     values['ip_%s' % name] = value
                 if 'ip_region' not in values:
                     values['ip_region'] = 'xxx'
             else:
                 values.update(self._empty_ip_location)
+            if 'ip_state' not in values:
+                values['ip_state'] = 'xx'
             all_values.append(values)
             ins = self.table_insert.values(values)
         if callback:
@@ -295,6 +297,9 @@ class RequestTracker(object):
                 print >> sys.stderr, 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.gz'
                 print >> sys.stderr, 'Per instructions: http://www.maxmind.com/app/installation?city=1'
                 self._geoip_warned = True
+            return
+        except Exception, e:
+            print 'error: add_geoip: ', e
             return
         if not rec:
             return
